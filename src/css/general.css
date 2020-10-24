@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+}
+
+.container{
+    margin: 50px
+}
+
+.fleft {
+    float: left;
+}
+
+.fright{
+    float: right;
+}

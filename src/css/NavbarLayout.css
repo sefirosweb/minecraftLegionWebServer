@@ -1,0 +1,15 @@
+.navBar {
+    padding: 10px;
+    background-color: #282c34;
+}
+
+.navBar a {
+    color: white;
+    margin: 5px;
+    text-decoration: none;
+}
+
+.is-selected{
+    font-weight: 600;
+    color: yellow;
+}
