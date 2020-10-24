@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/sefirosweb/minecraftLegionWebServer/issues"
   },
-  "homepage": "https://github.com/sefirosweb/minecraftLegionWebServer#readme"
+  "homepage": "https://github.com/sefirosweb/minecraftLegionWebServer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
 }
