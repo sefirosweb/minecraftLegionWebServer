@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
         botsConnected.splice(botsConnected.indexOf(find), 1)
 
         io.sockets.emit('botsOnline', JSON.stringify(botsConnected))
-        sendLogs('<span>Disconnected</span>', find.name)
+        sendLogs('Disconnected', find.name, socket.id)
     })
 
     // When bot logins
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
             botsConnected.push({ socketId: socket.id, name: botName })
         }
         io.sockets.emit('botsOnline', JSON.stringify(botsConnected))
-        sendLogs('Login', botName)
+        sendLogs('Login', botName, socket.id)
     })
 
     socket.on('getBotsOnline', () => {
@@ -52,22 +52,25 @@ io.on("connection", (socket) => {
         const find = botsConnected.find(botConection => botConection.socketId === socket.id)
 
         if (find !== undefined) {
-            sendLogs(data, find.name)
+            sendLogs(data, find.name, socket.id)
         } else {
             console.log(find)
         }
     })
 });
 
-function sendLogs(data, botName = '') {
+function sendLogs(data, botName = '', socketId = '') {
     const date = new Date()
-    const seconds = date.getSeconds()
-    const minutes = date.getMinutes()
-    const hour = date.getHours()
+    const time = ('0' + date.getHours()).slice(-2) + ':' + ('0' + (date.getMinutes() + 1)).slice(-2) + ':' + ('0' + (date.getSeconds() + 1)).slice(-2)
 
-    const dataToEmit = `${hour}:${minutes}:${seconds} ${botName} ${data}`
-    // console.log(dataToEmit)
-    io.sockets.emit('logs', dataToEmit)
+    const message = {
+        message: data,
+        time,
+        socketId,
+        botName
+    }
+
+    io.sockets.emit('logs', JSON.stringify(message))
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
