@@ -42,6 +42,19 @@ io.on("connection", (socket) => {
         socket.emit('botsOnline', JSON.stringify(botsConnected))
     })
 
+    socket.on('botStatus', (data) => {
+        const find = findBotSocket()
+        if (find) {
+            let message = JSON.parse(data)
+            message = { ...message, socketId: socket.id }
+            io.sockets.emit('botStatus', JSON.stringify(message))
+
+            const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
+            botsConnected[botIndex][message.type] = message.value
+        }
+    })
+
+
     // Reciving info
     socket.on('command', (data) => {
         sendLogs(data)
@@ -49,15 +62,24 @@ io.on("connection", (socket) => {
 
     // Reciving logs
     socket.on('logs', (data) => {
-        const find = botsConnected.find(botConection => botConection.socketId === socket.id)
-
-        if (find !== undefined) {
+        const find = findBotSocket()
+        if (find) {
             sendLogs(data, find.name, socket.id)
-        } else {
-            console.log(find)
         }
     })
+
+
+    function findBotSocket() {
+        const find = botsConnected.find(botConection => botConection.socketId === socket.id)
+        if (find === undefined) {
+            return false
+        } else {
+            return find
+        }
+    }
 });
+
+
 
 function sendLogs(data, botName = '', socketId = '') {
     const date = new Date()
