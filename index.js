@@ -1,23 +1,24 @@
-const express = require("express");
-const http = require("http");
-const socketIo = require("socket.io");
+const express = require("express")
+const http = require("http")
+const socketIo = require("socket.io")
 
-const port = 4001;
-// const index = require("./routes/index_routes"); un used
+const port = 4001
+// const index = require("./routes/index_routes") un used
 
-const app = express();
-// app.use(index); un used
+const app = express()
+// app.use(index) un used
 
-const server = http.createServer(app);
-const io = socketIo(server);
+const server = http.createServer(app)
+const io = socketIo(server)
 
+const botsConnected = []
 
 
 io.on("connection", (socket) => {
-    console.log("New client connected");
+    console.log("New client connected")
 
     socket.on("disconnect", () => {
-        console.log("Client disconnected");
+        console.log("Client disconnected")
 
         const find = botsConnected.find(botConection => botConection.socketId === socket.id)
         if (find === undefined) { return }
@@ -54,6 +55,14 @@ io.on("connection", (socket) => {
         }
     })
 
+    socket.on('botConnect', (message) => {
+        io.sockets.emit('botConnect', message)
+    })
+
+    socket.on('botDisconnect', (message) => {
+        io.sockets.emit('botDisconnect', message)
+    })
+
 
     // Reciving info
     socket.on('command', (data) => {
@@ -77,7 +86,7 @@ io.on("connection", (socket) => {
             return find
         }
     }
-});
+})
 
 
 
@@ -95,6 +104,5 @@ function sendLogs(data, botName = '', socketId = '') {
     io.sockets.emit('logs', JSON.stringify(message))
 }
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Listening on port ${port}`))
 
-const botsConnected = [];
