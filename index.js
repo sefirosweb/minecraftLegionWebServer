@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
     socket.on('addFriend', (botName) => {
         const find = botsConnected.find(botConection => botConection.name === botName)
         if (find === undefined) {
-            botsConnected.push({ socketId: socket.id, name: botName })
+            botsConnected.push({ socketId: socket.id, name: botName, health: 20, food: 20 })
         }
         io.sockets.emit('botsOnline', JSON.stringify(botsConnected))
         sendLogs('Login', botName, socket.id)
@@ -46,9 +46,8 @@ io.on("connection", (socket) => {
     socket.on('botStatus', (data) => {
         const find = findBotSocket()
         if (find) {
-            let message = JSON.parse(data)
-            message = { ...message, socketId: socket.id }
-            io.sockets.emit('botStatus', JSON.stringify(message))
+            const message = { ...data, socketId: socket.id }
+            io.sockets.emit('botStatus', message)
 
             const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
             botsConnected[botIndex][message.type] = message.value
@@ -78,6 +77,19 @@ io.on("connection", (socket) => {
     })
 
 
+    // Receiving chatMessage
+    socket.on('sendAction', (data) => {
+        console.log(data)
+
+        switch (data.action) {
+            case 'sendMessage':
+                io.to(data.socketId).emit("sendMessage", data.value)
+                break
+        }
+
+
+    })
+
     function findBotSocket() {
         const find = botsConnected.find(botConection => botConection.socketId === socket.id)
         if (find === undefined) {
@@ -101,7 +113,7 @@ function sendLogs(data, botName = '', socketId = '') {
         botName
     }
 
-    io.sockets.emit('logs', JSON.stringify(message))
+    io.sockets.emit('logs', message)
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`))
