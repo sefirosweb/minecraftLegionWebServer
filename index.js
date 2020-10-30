@@ -90,6 +90,24 @@ io.on("connection", (socket) => {
             case 'sendStay':
                 io.to(data.socketId).emit("sendStay", data.value)
                 break
+            case 'sendFollow':
+                io.to(data.socketId).emit("sendFollow", data.value)
+                break
+            case 'sendEndCommands':
+                io.to(data.socketId).emit("sendEndCommands", data.value)
+                break
+            case 'sendStartPatrol':
+                io.to(data.socketId).emit("sendStartPatrol", data.value)
+                break
+            case 'sendEndPatrol':
+                io.to(data.socketId).emit("sendEndPatrol", data.value)
+                break
+            case 'sendStartChest':
+                io.to(data.socketId).emit("sendStartChest", data.value)
+                break
+            case 'sendEndChest':
+                io.to(data.socketId).emit("sendEndChest", data.value)
+                break
         }
 
 
