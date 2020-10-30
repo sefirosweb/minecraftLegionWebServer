@@ -91,6 +91,9 @@ io.on("connection", (socket) => {
             case 'startInventory':
                 io.to(data.socketId).emit("startInventory", data.value)
                 break
+            case 'startViewer':
+                io.to(data.socketId).emit("startViewer", data.value)
+                break
         }
 
 
