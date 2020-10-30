@@ -85,8 +85,11 @@ io.on("connection", (socket) => {
             case 'sendMessage':
                 io.to(data.socketId).emit("sendMessage", data.value)
                 break
-            case 'setStateMachine':
-                io.to(data.socketId).emit("setStateMachine", data.value)
+            case 'startStateMachine':
+                io.to(data.socketId).emit("startStateMachine", data.value)
+                break
+            case 'startInventory':
+                io.to(data.socketId).emit("startInventory", data.value)
                 break
         }
 
