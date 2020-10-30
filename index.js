@@ -58,16 +58,6 @@ io.on("connection", (socket) => {
         io.sockets.emit('botConnect', message)
     })
 
-    socket.on('botDisconnect', (message) => {
-        io.sockets.emit('botDisconnect', message)
-    })
-
-
-    // Reciving info
-    socket.on('command', (data) => {
-        sendLogs(data)
-    })
-
     // Reciving logs
     socket.on('logs', (data) => {
         const find = findBotSocket()
@@ -81,7 +71,7 @@ io.on("connection", (socket) => {
     socket.on('sendAction', (data) => {
         console.log(data)
 
-        switch (data.action) {
+        switch (data.action) { // Action to specific bot
             case 'sendMessage':
                 io.to(data.socketId).emit("sendMessage", data.value)
                 break
@@ -93,6 +83,12 @@ io.on("connection", (socket) => {
                 break
             case 'startViewer':
                 io.to(data.socketId).emit("startViewer", data.value)
+                break
+            case 'sendDisconnect':
+                io.to(data.socketId).emit("sendDisconnect", data.value)
+                break
+            case 'sendStay':
+                io.to(data.socketId).emit("sendStay", data.value)
                 break
         }
 
