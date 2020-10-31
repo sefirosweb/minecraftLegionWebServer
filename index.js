@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
 
         botsConnected.splice(botsConnected.indexOf(find), 1)
 
-        io.sockets.emit('botsOnline', JSON.stringify(botsConnected))
+        io.sockets.emit('botsOnline', botsConnected)
         sendLogs('Disconnected', find.name, socket.id)
     })
 
@@ -33,14 +33,22 @@ io.on("connection", (socket) => {
     socket.on('addFriend', (botName) => {
         const find = botsConnected.find(botConection => botConection.name === botName)
         if (find === undefined) {
-            botsConnected.push({ socketId: socket.id, name: botName, health: 20, food: 20 })
+            botsConnected.push({
+                socketId: socket.id,
+                name: botName,
+                health: 20,
+                food: 20,
+                stateMachinePort: null,
+                inventoryPort: null,
+                viewerPort: null
+            })
         }
-        io.sockets.emit('botsOnline', JSON.stringify(botsConnected))
+        io.sockets.emit('botsOnline', botsConnected)
         sendLogs('Login', botName, socket.id)
     })
 
     socket.on('getBotsOnline', () => {
-        socket.emit('botsOnline', JSON.stringify(botsConnected))
+        socket.emit('botsOnline', botsConnected)
     })
 
     socket.on('botStatus', (data) => {
@@ -70,6 +78,7 @@ io.on("connection", (socket) => {
     // Receiving chatMessage
     socket.on('sendAction', (data) => {
         console.log(data)
+        let index
 
         switch (data.action) { // Action to specific bot
             case 'sendMessage':
@@ -77,12 +86,27 @@ io.on("connection", (socket) => {
                 break
             case 'startStateMachine':
                 io.to(data.socketId).emit("startStateMachine", data.value)
+                index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
+                if (index >= 0) {
+                    botsConnected[index]['stateMachinePort'] = data.value.port
+                    io.sockets.emit('botsOnline', botsConnected)
+                }
                 break
             case 'startInventory':
                 io.to(data.socketId).emit("startInventory", data.value)
+                index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
+                if (index >= 0) {
+                    botsConnected[index]['inventoryPort'] = data.value.port
+                    io.sockets.emit('botsOnline', botsConnected)
+                }
                 break
             case 'startViewer':
                 io.to(data.socketId).emit("startViewer", data.value)
+                index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
+                if (index >= 0) {
+                    botsConnected[index]['viewerPort'] = data.value.port
+                    io.sockets.emit('botsOnline', botsConnected)
+                }
                 break
             case 'sendDisconnect':
                 io.to(data.socketId).emit("sendDisconnect", data.value)
