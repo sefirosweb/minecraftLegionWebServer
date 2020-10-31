@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
                 name: botName,
                 health: 20,
                 food: 20,
+                combat: false,
                 stateMachinePort: null,
                 inventoryPort: null,
                 viewerPort: null
@@ -52,12 +53,10 @@ io.on("connection", (socket) => {
     })
 
     socket.on('botStatus', (data) => {
-        const find = findBotSocket()
-        if (find) {
+        const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
+        if (botIndex >= 0) {
             const message = { ...data, socketId: socket.id }
             io.sockets.emit('botStatus', message)
-
-            const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
             botsConnected[botIndex][message.type] = message.value
         }
     })
@@ -138,11 +137,11 @@ io.on("connection", (socket) => {
     })
 
     function findBotSocket() {
-        const find = botsConnected.find(botConection => botConection.socketId === socket.id)
-        if (find === undefined) {
+        const bot = botsConnected.find(botConection => botConection.socketId === socket.id)
+        if (bot === undefined) {
             return false
         } else {
-            return find
+            return bot
         }
     }
 })
