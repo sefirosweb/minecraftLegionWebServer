@@ -129,9 +129,6 @@ io.on("connection", (socket) => {
             case 'sendSaveChest':
                 io.to(data.socketId).emit("sendSaveChest", data.value)
                 break
-            case 'sendSaveFoodChest':
-                io.to(data.socketId).emit("sendSaveFoodChest", data.value)
-                break
         }
 
 
