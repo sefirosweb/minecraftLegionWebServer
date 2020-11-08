@@ -12,9 +12,11 @@ const server = http.createServer(app)
 const io = socketIo(server)
 
 const botsConnected = []
+const masters = []
 
 io.on('connection', (socket) => {
   console.log('New client connected')
+  socket.emit('mastersOnline', masters)
 
   socket.on('disconnect', () => {
     console.log('Client disconnected')
@@ -45,6 +47,18 @@ io.on('connection', (socket) => {
     }
     io.sockets.emit('botsOnline', botsConnected)
     sendLogs('Login', botName, socket.id)
+  })
+
+  // Adding master
+  socket.on('addMaster', (message) => {
+    const masterIndex = masters.findIndex((e) => { return e.name === message.name })
+    if (masterIndex < 0) {
+      masters.push({
+        name: message.name
+      })
+    }
+    io.sockets.emit('mastersOnline', masters)
+    console.log(masters)
   })
 
   socket.on('getBotsOnline', () => {
