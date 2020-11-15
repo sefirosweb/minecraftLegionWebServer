@@ -1,15 +1,7 @@
-const express = require('express')
-const http = require('http')
-const socketIo = require('socket.io')
+const port = 4001 // Port To Listen
 
-const port = 4001
-// const index = require("./routes/index_routes") un used
-
-const app = express()
-// app.use(index) un used
-
-const server = http.createServer(app)
-const io = socketIo(server)
+const server = require('http').createServer()
+const io = require('socket.io')(server)
 
 const botsConnected = []
 const masters = []
@@ -131,7 +123,6 @@ io.on('connection', (socket) => {
       case 'sendEndCommands':
         io.to(data.socketId).emit('sendEndCommands', data.value)
         break
-
       case 'sendStartWay':
         io.to(data.socketId).emit('sendStartWay', data.value)
         break
@@ -140,6 +131,15 @@ io.on('connection', (socket) => {
         break
       case 'sendSaveChest':
         io.to(data.socketId).emit('sendSaveChest', data.value)
+        break
+      case 'getConfig':
+        io.socket(data.socketId).emit('getConfig', data.value, function (data) {
+          console.log('callback getconfig')
+          console.log(data)
+        })
+        break
+      case 'sendConfig':
+        io.to(data.socketId).emit('getConfig', data.value)
         break
     }
   })
