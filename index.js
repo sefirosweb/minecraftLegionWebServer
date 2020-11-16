@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
   socket.on('botStatus', (data) => {
     const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
     if (botIndex >= 0) {
-      const message = { ...data, socketId: socket.id }
+      const message = { type: data.type, value: data.value, socketId: socket.id }
       io.emit('botStatus', message)
       botsConnected[botIndex][message.type] = message.value
     }
@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
 
   // Reciving logs
   socket.on('logs', (data) => {
-    const find = findBotSocket()
+    const find = findBotSocket(socket)
     if (find) {
       sendLogs(data, find.name, socket.id)
     }
@@ -133,25 +133,13 @@ io.on('connection', (socket) => {
         io.to(data.socketId).emit('sendSaveChest', data.value)
         break
       case 'getConfig':
-        io.to(data.socketId).emit('getConfig', data.value, function (data) {
-          console.log('callback getconfig')
-          console.log(data)
-        })
+        io.to(data.socketId).emit('getConfig', data.value)
         break
       case 'sendConfig':
         io.to(data.socketId).emit('getConfig', data.value)
         break
     }
   })
-
-  function findBotSocket () {
-    const bot = botsConnected.find(botConection => botConection.socketId === socket.id)
-    if (bot === undefined) {
-      return false
-    } else {
-      return bot
-    }
-  }
 })
 
 function sendLogs (data, botName = '', socketId = '') {
@@ -166,6 +154,15 @@ function sendLogs (data, botName = '', socketId = '') {
   }
 
   io.emit('logs', message)
+}
+
+function findBotSocket (socket) {
+  const bot = botsConnected.find(botConection => botConection.socketId === socket.id)
+  if (bot === undefined) {
+    return false
+  } else {
+    return bot
+  }
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`))
