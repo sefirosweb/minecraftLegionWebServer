@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
 
     botsConnected.splice(botsConnected.indexOf(find), 1)
 
-    io.sockets.emit('botsOnline', botsConnected)
+    io.emit('botsOnline', botsConnected)
     sendLogs('Disconnected', find.name, socket.id)
   })
 
@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
   socket.on('addFriend', (botName) => {
     const find = botsConnected.find(botConection => botConection.name === botName)
     if (find === undefined) {
-      botsConnected.push({
+      botsConnected.push({ // Default Data
         socketId: socket.id,
         name: botName,
         health: 20,
@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
         viewerPort: null
       })
     }
-    io.sockets.emit('botsOnline', botsConnected)
+    io.emit('botsOnline', botsConnected)
     sendLogs('Login', botName, socket.id)
   })
 
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         name: message.name
       })
     }
-    io.sockets.emit('mastersOnline', masters)
+    io.emit('mastersOnline', masters)
     console.log(masters)
   })
 
@@ -61,13 +61,13 @@ io.on('connection', (socket) => {
     const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
     if (botIndex >= 0) {
       const message = { ...data, socketId: socket.id }
-      io.sockets.emit('botStatus', message)
+      io.emit('botStatus', message)
       botsConnected[botIndex][message.type] = message.value
     }
   })
 
   socket.on('botConnect', (message) => {
-    io.sockets.emit('botConnect', message)
+    io.emit('botConnect', message)
   })
 
   // Reciving logs
@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
         index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
         if (index >= 0) {
           botsConnected[index].stateMachinePort = data.value.port
-          io.sockets.emit('botsOnline', botsConnected)
+          io.emit('botsOnline', botsConnected)
         }
         break
       case 'startInventory':
@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
         index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
         if (index >= 0) {
           botsConnected[index].inventoryPort = data.value.port
-          io.sockets.emit('botsOnline', botsConnected)
+          io.emit('botsOnline', botsConnected)
         }
         break
       case 'startViewer':
@@ -108,7 +108,7 @@ io.on('connection', (socket) => {
         index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
         if (index >= 0) {
           botsConnected[index].viewerPort = data.value.port
-          io.sockets.emit('botsOnline', botsConnected)
+          io.emit('botsOnline', botsConnected)
         }
         break
       case 'sendDisconnect':
@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
         io.to(data.socketId).emit('sendSaveChest', data.value)
         break
       case 'getConfig':
-        io.socket(data.socketId).emit('getConfig', data.value, function (data) {
+        io.to(data.socketId).emit('getConfig', data.value, function (data) {
           console.log('callback getconfig')
           console.log(data)
         })
@@ -165,7 +165,7 @@ function sendLogs (data, botName = '', socketId = '') {
     botName
   }
 
-  io.sockets.emit('logs', message)
+  io.emit('logs', message)
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`))
