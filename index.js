@@ -133,10 +133,13 @@ io.on('connection', (socket) => {
         io.to(data.socketId).emit('sendSaveChest', data.value)
         break
       case 'getConfig':
-        io.to(data.socketId).emit('getConfig', data.value)
+        console.log(data.socketId)
+        io.to(data.socketId).emit('getConfig', socket.id)
         break
       case 'sendConfig':
-        io.to(data.socketId).emit('getConfig', data.value)
+        console.log('sendConfig')
+        console.log(data.socketId)
+        io.to(data.socketId).emit('sendConfig', data.value)
         break
     }
   })
