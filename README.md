@@ -20,4 +20,4 @@ The bot is liten on port 4001 for connect bots and frontend
 
 # TODO
 - Make a Configuration flexible
-- Explain better this program
+- Make a robuts documentation
