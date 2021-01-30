@@ -132,6 +132,15 @@ io.on('connection', (socket) => {
       case 'sendSaveChest':
         io.to(data.socketId).emit('sendSaveChest', data.value)
         break
+      case 'move':
+        io.to(data.socketId).emit('move', data.value)
+        break
+      case 'interact':
+        io.to(data.socketId).emit('interact', data.value)
+        break
+      case 'drop':
+        io.to(data.socketId).emit('drop', data.value)
+        break
       case 'getConfig':
         console.log(data.socketId)
         io.to(data.socketId).emit('getConfig', socket.id)
@@ -145,7 +154,7 @@ io.on('connection', (socket) => {
   })
 })
 
-function sendLogs (data, botName = '', socketId = '') {
+function sendLogs(data, botName = '', socketId = '') {
   const date = new Date()
   const time = ('0' + date.getHours()).slice(-2) + ':' + ('0' + (date.getMinutes() + 1)).slice(-2) + ':' + ('0' + (date.getSeconds() + 1)).slice(-2)
 
@@ -159,7 +168,7 @@ function sendLogs (data, botName = '', socketId = '') {
   io.emit('logs', message)
 }
 
-function findBotSocket (socket) {
+function findBotSocket(socket) {
   const bot = botsConnected.find(botConection => botConection.socketId === socket.id)
   if (bot === undefined) {
     return false
