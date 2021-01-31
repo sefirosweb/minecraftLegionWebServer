@@ -16,7 +16,8 @@ app.post('/login', (req, res) => {
         nombre: 'TestUser'
     }
 
-    jwt.sign({ user }, secretKey, { expiresIn: '30s' }, (err, token) => {
+    // Expira en 300 segundos
+    jwt.sign({ user }, secretKey, { expiresIn: '300s' }, (err, token) => {
         res.json({
             token
         })
