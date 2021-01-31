@@ -1,10 +1,12 @@
-const port = 4001 // Port To Listen
+
 
 const server = require('http').createServer()
 const io = require('socket.io')(server)
 
 const botsConnected = []
 const masters = []
+
+const { listenPort } = require('./config')
 
 io.on('connection', (socket) => {
   console.log('New client connected')
@@ -177,4 +179,4 @@ function findBotSocket(socket) {
   }
 }
 
-server.listen(port, () => console.log(`Listening on port ${port}`))
+server.listen(listenPort, () => console.log(`Listening on port ${listenPort}`))
