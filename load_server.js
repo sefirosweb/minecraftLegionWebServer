@@ -1,12 +1,13 @@
 module.exports = () => {
 
     const server = require('http').createServer()
+    const jwt = require('jsonwebtoken')
     const io = require('socket.io')(server)
 
     const botsConnected = []
     const masters = []
 
-    const { listenPort } = require('./config')
+    const { listenPort, adminPassword, authJwtSecret } = require('./config')
 
 
     io.on('connection', (socket) => {
@@ -23,6 +24,22 @@ module.exports = () => {
 
             io.emit('botsOnline', botsConnected)
             sendLogs('Disconnected', find.name, socket.id)
+        })
+
+        // When bot logins
+        socket.on('login', (password) => {
+            if (password === adminPassword) {
+
+                const token = jwt.sign(
+                    { socketId: socket.id },
+                    authJwtSecret,
+                    { expiresIn: '2h' }
+                )
+
+                socket.emit('login', { auth: true, token })
+            } else {
+                socket.emit('login', { auth: false })
+            }
         })
 
         // When bot logins
