@@ -1,42 +1,42 @@
 module.exports = () => {
 
     const server = require('http').createServer()
-    const jwt = require('jsonwebtoken')
     const io = require('socket.io')(server)
 
     const botsConnected = []
     const masters = []
+    const users_loged = []
 
-    const { listenPort, adminPassword, authJwtSecret } = require('./config')
-
+    const { listenPort, adminPassword } = require('./config')
 
     io.on('connection', (socket) => {
-        console.log('New client connected')
+        console.log(`New client connected => ${socket.id}`)
         socket.emit('mastersOnline', masters)
 
         socket.on('disconnect', () => {
             console.log('Client disconnected')
 
-            const find = botsConnected.find(botConection => botConection.socketId === socket.id)
-            if (find === undefined) { return }
+            const user_loged_idx = users_loged.indexOf(socket.id)
+            if (user_loged_idx >= 0) {
+                users_loged.splice(user_loged_idx, 1)
+            }
 
-            botsConnected.splice(botsConnected.indexOf(find), 1)
+            const botDisconnected = botsConnected.find(botConection => botConection.socketId === socket.id)
+            // If connection is not bot o continue
+            if (botDisconnected === undefined) { return }
+            botsConnected.splice(botsConnected.indexOf(botDisconnected), 1)
 
-            io.emit('botsOnline', botsConnected)
-            sendLogs('Disconnected', find.name, socket.id)
+            io.to('users_loged').emit('botsOnline', botsConnected)
+            sendLogs('Disconnected', botDisconnected.name, socket.id)
         })
 
         // When bot logins
         socket.on('login', (password) => {
             if (password === adminPassword) {
-
-                const token = jwt.sign(
-                    { socketId: socket.id },
-                    authJwtSecret,
-                    { expiresIn: '2h' }
-                )
-
-                socket.emit('login', { auth: true, token })
+                console.log(`User loged correctly => ${socket.id}`)
+                socket.emit('login', { auth: true })
+                socket.join('users_loged');
+                users_loged.push(socket.id)
             } else {
                 socket.emit('login', { auth: false })
             }
@@ -44,6 +44,7 @@ module.exports = () => {
 
         // When bot logins
         socket.on('addFriend', (botName) => {
+            if (!isLoged()) { return }
             const find = botsConnected.find(botConection => botConection.name === botName)
             if (find === undefined) {
                 botsConnected.push({ // Default Data
@@ -57,41 +58,46 @@ module.exports = () => {
                     viewerPort: null
                 })
             }
-            io.emit('botsOnline', botsConnected)
+            io.to('users_loged').emit('botsOnline', botsConnected)
             sendLogs('Login', botName, socket.id)
         })
 
         // Adding master
         socket.on('addMaster', (message) => {
+            if (!isLoged()) { return }
             const masterIndex = masters.findIndex((e) => { return e.name === message.name })
             if (masterIndex < 0) {
                 masters.push({
                     name: message.name
                 })
             }
-            io.emit('mastersOnline', masters)
+            io.to('users_loged').emit('mastersOnline', masters)
             console.log(masters)
         })
 
         socket.on('getBotsOnline', () => {
+            if (!isLoged()) { return }
             socket.emit('botsOnline', botsConnected)
         })
 
         socket.on('botStatus', (data) => {
+            if (!isLoged()) { return }
             const botIndex = botsConnected.findIndex((e) => { return e.socketId === socket.id })
             if (botIndex >= 0) {
                 const message = { type: data.type, value: data.value, socketId: socket.id }
-                io.emit('botStatus', message)
+                io.to('users_loged').emit('botStatus', message)
                 botsConnected[botIndex][message.type] = message.value
             }
         })
 
         socket.on('botConnect', (message) => {
+            if (!isLoged()) { return }
             io.emit('botConnect', message)
         })
 
         // Reciving logs
         socket.on('logs', (data) => {
+            if (!isLoged()) { return }
             const find = findBotSocket(socket)
             if (find) {
                 sendLogs(data, find.name, socket.id)
@@ -100,6 +106,7 @@ module.exports = () => {
 
         // Receiving chatMessage
         socket.on('sendAction', (data) => {
+            if (!isLoged()) { return }
             console.log(data)
             let index
 
@@ -112,7 +119,7 @@ module.exports = () => {
                     index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
                     if (index >= 0) {
                         botsConnected[index].stateMachinePort = data.value.port
-                        io.emit('botsOnline', botsConnected)
+                        io.to('users_loged').emit('botsOnline', botsConnected)
                     }
                     break
                 case 'startInventory':
@@ -120,7 +127,7 @@ module.exports = () => {
                     index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
                     if (index >= 0) {
                         botsConnected[index].inventoryPort = data.value.port
-                        io.emit('botsOnline', botsConnected)
+                        io.to('users_loged').emit('botsOnline', botsConnected)
                     }
                     break
                 case 'startViewer':
@@ -128,7 +135,7 @@ module.exports = () => {
                     index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
                     if (index >= 0) {
                         botsConnected[index].viewerPort = data.value.port
-                        io.emit('botsOnline', botsConnected)
+                        io.to('users_loged').emit('botsOnline', botsConnected)
                     }
                     break
                 case 'sendDisconnect':
@@ -172,6 +179,10 @@ module.exports = () => {
                     break
             }
         })
+
+        function isLoged() {
+            return users_loged.find(user_id => user_id === socket.id)
+        }
     })
 
     function sendLogs(data, botName = '', socketId = '') {
@@ -185,7 +196,7 @@ module.exports = () => {
             botName
         }
 
-        io.emit('logs', message)
+        io.to('users_loged').emit('logs', message)
     }
 
     function findBotSocket(socket) {
