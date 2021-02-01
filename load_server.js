@@ -37,7 +37,7 @@ module.exports = () => {
                 socket.join('users_loged');
                 users_loged.push(socket.id)
 
-                socket.to('users_loged').emit('mastersOnline', masters)
+                socket.emit('mastersOnline', masters)
             } else {
                 socket.emit('login', { auth: false })
             }
@@ -78,7 +78,7 @@ module.exports = () => {
 
         socket.on('getBotsOnline', () => {
             if (!isLoged()) { return }
-            socket.to('users_loged').emit('botsOnline', botsConnected)
+            socket.emit('botsOnline', botsConnected)
         })
 
         socket.on('botStatus', (data) => {
