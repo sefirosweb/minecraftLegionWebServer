@@ -11,7 +11,6 @@ module.exports = () => {
 
     io.on('connection', (socket) => {
         console.log(`New client connected => ${socket.id}`)
-        socket.emit('mastersOnline', masters)
 
         socket.on('disconnect', () => {
             console.log('Client disconnected')
@@ -37,6 +36,8 @@ module.exports = () => {
                 socket.emit('login', { auth: true })
                 socket.join('users_loged');
                 users_loged.push(socket.id)
+
+                socket.to('users_loged').emit('mastersOnline', masters)
             } else {
                 socket.emit('login', { auth: false })
             }
@@ -77,7 +78,7 @@ module.exports = () => {
 
         socket.on('getBotsOnline', () => {
             if (!isLoged()) { return }
-            socket.emit('botsOnline', botsConnected)
+            socket.to('users_loged').emit('botsOnline', botsConnected)
         })
 
         socket.on('botStatus', (data) => {
@@ -92,7 +93,7 @@ module.exports = () => {
 
         socket.on('botConnect', (message) => {
             if (!isLoged()) { return }
-            io.emit('botConnect', message)
+            io.to('users_loged').emit('botConnect', message)
         })
 
         // Reciving logs
@@ -169,12 +170,9 @@ module.exports = () => {
                     io.to(data.socketId).emit('drop', data.value)
                     break
                 case 'getConfig':
-                    console.log(data.socketId)
                     io.to(data.socketId).emit('getConfig', socket.id)
                     break
                 case 'sendConfig':
-                    console.log('sendConfig')
-                    console.log(data.socketId)
                     io.to(data.socketId).emit('sendConfig', data.value)
                     break
             }
