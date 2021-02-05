@@ -1,5 +1,4 @@
-const fs = require('fs');
-const readline = require('readline');
+const fs = require('fs')
 const loadServer = require('./load_server')
 const crypto = require('crypto')
 
@@ -19,7 +18,7 @@ const requests = [
   'Please insert a secretkey [Blank auto generate]\n'
 ]
 
-function questions(i) {
+function questions (i) {
   process.stdout.write(requests[i])
 }
 
@@ -33,31 +32,28 @@ process.stdin.on('data', (data) => {
   }
 })
 
-function writeFile(data) {
+function writeFile (data) {
   let port = data[0]
   let password = data[1]
   let secret = data[2]
 
-  if (port == '') {
+  if (port === '') {
     port = 4001
   }
 
-  if (password == '') {
+  if (password === '') {
     password = crypto.randomBytes(8).toString('base64')
   }
 
-  if (secret == '') {
+  if (secret === '') {
     secret = crypto.randomBytes(32).toString('base64')
   }
 
   fs.writeFile('.env', `LISTEN_PORT=${port}\nADMIN_PASSWORD=${password}\nAUTH_JWT_SECRET=${secret}`, error => {
-    if (error)
-      console.log(error);
-    else {
-      console.log('Completed .env file');
+    if (error) { console.log(error) } else {
+      console.log('Completed .env file')
       console.log(`Password admin is: ${password}`)
       loadServer()
     }
-
-  });
+  })
 }
