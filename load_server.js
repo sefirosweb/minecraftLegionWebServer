@@ -63,19 +63,6 @@ module.exports = () => {
             sendLogs('Login', botName, socket.id)
         })
 
-        // Adding master
-        socket.on('addMaster', (message) => {
-            if (!isLoged()) { return }
-            const masterIndex = masters.findIndex((e) => { return e.name === message.name })
-            if (masterIndex < 0) {
-                masters.push({
-                    name: message.name
-                })
-            }
-            io.to('users_loged').emit('mastersOnline', masters)
-            console.log(masters)
-        })
-
         socket.on('getBotsOnline', () => {
             if (!isLoged()) { return }
             socket.emit('botsOnline', botsConnected)
@@ -175,6 +162,31 @@ module.exports = () => {
                 case 'sendConfig':
                     io.to(data.socketId).emit('sendConfig', data.value)
                     break
+                case 'addMaster':
+                    if (data.value === undefined) { return }
+                    data.value = data.value.trim()
+
+                    masterIndex = masters.findIndex((e) => { return e.name === data.value })
+                    if (masterIndex < 0 && data.value !== '') {
+                        masters.push({
+                            name: data.value
+                        })
+                    }
+
+                    io.to('users_loged').emit('mastersOnline', masters)
+                    break
+                case 'removeMaster':
+                    if (data.value === undefined) { return }
+                    data.value = data.value.trim()
+
+                    masterIndex = masters.findIndex((e) => { return e.name === data.value })
+                    if (masterIndex >= 0) {
+                        masters.splice(masterIndex, 1)
+                    }
+
+                    io.to('users_loged').emit('mastersOnline', masters)
+                    break
+
             }
         })
 
