@@ -57,7 +57,8 @@ module.exports = () => {
           inventoryPort: null,
           viewerPort: null,
           config: {
-            job: 'none'
+            job: 'none',
+            pickUpItems: false
           }
         })
       }
