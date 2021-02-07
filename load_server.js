@@ -58,7 +58,12 @@ module.exports = () => {
           viewerPort: null,
           config: {
             job: 'none',
-            pickUpItems: false
+            mode: 'none',
+            distance: 10,
+            pickUpItems: false,
+            help_friends: false,
+            itemsToBeReady: [],
+            patrol: []
           }
         })
       }
