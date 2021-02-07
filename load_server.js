@@ -55,7 +55,10 @@ module.exports = () => {
           combat: false,
           stateMachinePort: null,
           inventoryPort: null,
-          viewerPort: null
+          viewerPort: null,
+          config: {
+            job: 'none'
+          }
         })
       }
       io.to('usersLoged').emit('botsOnline', botsConnected)
@@ -97,7 +100,7 @@ module.exports = () => {
       console.log(data)
       let index
 
-      switch (data.action) { // Action to specific bot
+      switch (data.action) {
         case 'sendMessage':
           io.to(data.socketId).emit('sendMessage', data.value)
           break
@@ -159,7 +162,13 @@ module.exports = () => {
           io.to(data.socketId).emit('getConfig', socket.id)
           break
         case 'sendConfig':
+          data.value.socketId = socket.id
           io.to(data.socketId).emit('sendConfig', data.value)
+          break
+        case 'changeConfig':
+          data.value.fromSocketId = socket.id
+          data.value.botName = botsConnected.find(b => b.socketId === data.socketId).name
+          io.to(data.socketId).emit('changeConfig', data.value)
           break
         case 'addMaster':
           if (data.value === undefined) { return }
