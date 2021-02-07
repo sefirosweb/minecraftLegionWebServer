@@ -62,6 +62,16 @@ module.exports = () => {
             distance: 10,
             pickUpItems: false,
             help_friends: false,
+            minerCords: {
+              xStart: null,
+              yStart: null,
+              zStart: null,
+              xEnd: null,
+              yEnd: null,
+              zEnd: null,
+              orientation: null,
+              tunel: null
+            },
             itemsToBeReady: [],
             patrol: []
           }
