@@ -167,7 +167,6 @@ module.exports = () => {
           break
         case 'changeConfig':
           data.value.fromSocketId = socket.id
-          data.value.botName = botsConnected.find(b => b.socketId === data.socketId).name
           io.to(data.socketId).emit('changeConfig', data.value)
           break
         case 'addMaster':
