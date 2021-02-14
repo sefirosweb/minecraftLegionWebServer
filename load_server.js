@@ -60,8 +60,12 @@ module.exports = () => {
             job: 'none',
             mode: 'none',
             distance: 10,
+            helpFriends: false,
             pickUpItems: false,
-            help_friends: false,
+            itemsToBeReady: [],
+            itemsCanBeEat: [],
+            chests: [],
+            patrol: [],
             minerCords: {
               xStart: null,
               yStart: null,
@@ -71,9 +75,7 @@ module.exports = () => {
               zEnd: null,
               orientation: null,
               tunel: null
-            },
-            itemsToBeReady: [],
-            patrol: []
+            }
           }
         })
       }
