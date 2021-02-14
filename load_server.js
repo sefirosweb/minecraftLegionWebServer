@@ -162,9 +162,6 @@ module.exports = () => {
         case 'sendSavePatrol':
           io.to(data.socketId).emit('sendSavePatrol', data.value)
           break
-        case 'sendSaveChest':
-          io.to(data.socketId).emit('sendSaveChest', data.value)
-          break
         case 'move':
           io.to(data.socketId).emit('move', data.value)
           break
