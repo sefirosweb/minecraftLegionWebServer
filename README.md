@@ -1,3 +1,4 @@
+
 # minecraftLegionWebServer
 
 This project was part of [minecraftLegion](https://github.com/sefirosweb/minecraftLegion).
@@ -5,8 +6,9 @@ This project was part of [minecraftLegion](https://github.com/sefirosweb/minecra
 This is a backend for manage the bot.
 
 ## Install: 
-- Install Novde version 10+
-- npm i minecraftLegionWebServer
+- Install [Node.js](https://nodejs.dev/) version 10+ 
+- go to the directory witch you want to install into
+- run `npm i minecraftlegion` on command promt
 
 
 ## Usage:
@@ -15,7 +17,13 @@ This is a backend for manage the bot.
 
 Runs the app.
 
-The bot is liten on port 4001 for connect bots and frontend
+it uses [jwt tokens](https://jwt.io/)
+it will auto generate one for you but you can generate one with a password run:
+
+    node ./examples/jwt-token.js sign test
+
+edit the `const secretPassword = 'YOUR_PASSWORD'`  in /examples/jwt-token.js to add the password
+The webserver(by default) is listening on port 4001 for connecting bots and the frontend
 
 
 # TODO
