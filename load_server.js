@@ -115,7 +115,6 @@ module.exports = () => {
     // Receiving chatMessage
     socket.on('sendAction', (data) => {
       if (!isLoged()) { return }
-      console.log(data)
       let index
 
       switch (data.action) {
