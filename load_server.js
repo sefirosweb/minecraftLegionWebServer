@@ -178,7 +178,7 @@ module.exports = () => {
           break
         case 'sendConfig':
           data.value.socketId = socket.id
-          io.to(data.socketId).emit('sendConfig', data.value)
+          io.to('usersLoged').emit('sendConfig', data.value)
           break
         case 'changeConfig':
           data.value.fromSocketId = socket.id
