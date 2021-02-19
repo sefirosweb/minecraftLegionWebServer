@@ -4,10 +4,11 @@ This project was part of [minecraftLegion](https://github.com/sefirosweb/minecra
 
 This is a backend for manage the bot.
 
-## Install: 
-- Install Novde version 10+
-- npm i minecraftLegionWebServer
-
+## Install:
+- Install [Node.js](https://nodejs.dev/) version 14+ 
+- go to the directory which you want to install into
+- run `npm i minecraftLegionWebServer` on command prompt
+- make a new file called config.js with the fields shown below
 
 ## Usage:
 
