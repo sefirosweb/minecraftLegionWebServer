@@ -1,12 +1,19 @@
 module.exports = () => {
+  const { listenPort, adminPassword, webClient } = require('./config')
+
   const server = require('http').createServer()
-  const io = require('socket.io')(server)
+  const io = require('socket.io')(server, {
+    cors: {
+      origin: webClient,
+      credentials: true
+    }
+  })
 
   const botsConnected = []
   const masters = []
   const usersLoged = []
 
-  const { listenPort, adminPassword } = require('./config')
+
 
   io.on('connection', (socket) => {
     console.log(`New client connected => ${socket.id}`)
@@ -115,7 +122,6 @@ module.exports = () => {
     // Receiving chatMessage
     socket.on('sendAction', (data) => {
       if (!isLoged()) { return }
-      console.log(data)
       let index
 
       switch (data.action) {
@@ -178,7 +184,7 @@ module.exports = () => {
           break
         case 'sendConfig':
           data.value.socketId = socket.id
-          io.to(data.socketId).emit('sendConfig', data.value)
+          io.to('usersLoged').emit('sendConfig', data.value)
           break
         case 'changeConfig':
           data.value.fromSocketId = socket.id

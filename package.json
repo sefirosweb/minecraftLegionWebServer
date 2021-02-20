@@ -1,6 +1,6 @@
 {
   "name": "minecraftlegionwebserver",
-  "version": "0.0.2",
+  "version": "0.1.6",
   "private": false,
   "description": "Project backend for minecraft legion web server",
   "main": "index.js",
@@ -20,10 +20,8 @@
   },
   "homepage": "https://github.com/sefirosweb/minecraftLegionWebServer#readme",
   "dependencies": {
-    "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^3.1.1"
   },
   "devDependencies": {
     "chalk": "^4.1.0",
