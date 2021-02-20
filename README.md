@@ -1,26 +1,31 @@
+
 # minecraftLegionWebServer
 
 This project was part of [minecraftLegion](https://github.com/sefirosweb/minecraftLegion).
 
-This is a bridge for manage the bot.
+This is a backend for manage the bot.
 
-## Install:
-- Install [Node.js](https://nodejs.dev/) version 14+ 
-- go to the directory which you want to install into
-- run `npm i minecraftLegionWebServer` on command prompt
-- make a new file called .env with the fields shown below
-```env
-LISTEN_PORT=4001
-ADMIN_PASSWORD=AdminnPassForManageBot
-WEB_CLIENT=http://localhost:4000
-```
-- Run the app with `npm start`
-- WEB_CLIENT => Is minecraftLegionWebClient host:port, is used for accept CORS
+## Install: 
+- Install [Node.js](https://nodejs.dev/) version 10+ 
+- go to the directory witch you want to install into
+- run `npm i minecraftlegion` on command promt
+
 
 ## Usage:
-Start app with `npm start`
-They start listening with port you selected in .env file 
-No need anything else, this app is used for bridge / middleware between bots and front end
+
+### `npm start`
+
+Runs the app.
+
+it uses [jwt tokens](https://jwt.io/)
+it will auto generate one for you but you can generate one with a password run:
+
+    node ./examples/jwt-token.js sign test
+
+edit the `const secretPassword = 'YOUR_PASSWORD'`  in /examples/jwt-token.js to add the password
+The webserver(by default) is listening on port 4001 for connecting bots and the frontend
+
 
 # TODO
+- Make a Configuration flexible
 - Make a robuts documentation
