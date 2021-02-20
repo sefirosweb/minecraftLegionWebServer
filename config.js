@@ -3,7 +3,7 @@ require('dotenv').config()
 const config = {
   listenPort: process.env.LISTEN_PORT,
   adminPassword: process.env.ADMIN_PASSWORD,
-  authJwtSecret: process.env.AUTH_JWT_SECRET
+  webClient: process.env.WEB_CLIENT,
 }
 
 module.exports = config

@@ -1,12 +1,19 @@
 module.exports = () => {
+  const { listenPort, adminPassword, webClient } = require('./config')
+
   const server = require('http').createServer()
-  const io = require('socket.io')(server)
+  const io = require('socket.io')(server, {
+    cors: {
+      origin: webClient,
+      credentials: true
+    }
+  })
 
   const botsConnected = []
   const masters = []
   const usersLoged = []
 
-  const { listenPort, adminPassword } = require('./config')
+
 
   io.on('connection', (socket) => {
     console.log(`New client connected => ${socket.id}`)
