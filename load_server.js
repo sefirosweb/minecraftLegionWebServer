@@ -130,13 +130,9 @@ module.exports = () => {
       switch (data.action) {
         case 'action':
           io.to(data.socketId).emit('action', data.toBotData)
-          console.log('action', data)
-          break
-        case 'sendMessage':
-          io.to(data.socketId).emit('sendMessage', data.value)
           break
         case 'startStateMachine':
-          io.to(data.socketId).emit('startStateMachine', data.value)
+          io.to(data.socketId).emit('action', { type: 'startStateMachine', value: data.value })
           index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
           if (index >= 0) {
             botsConnected[index].stateMachinePort = data.value.port
@@ -144,7 +140,7 @@ module.exports = () => {
           }
           break
         case 'startInventory':
-          io.to(data.socketId).emit('startInventory', data.value)
+          io.to(data.socketId).emit('action', { type: 'startInventory', value: data.value })
           index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
           if (index >= 0) {
             botsConnected[index].inventoryPort = data.value.port
@@ -152,7 +148,7 @@ module.exports = () => {
           }
           break
         case 'startViewer':
-          io.to(data.socketId).emit('startViewer', data.value)
+          io.to(data.socketId).emit('action', { type: 'startViewer', value: data.value })
           index = botsConnected.findIndex((e) => { return e.socketId === data.socketId })
           if (index >= 0) {
             botsConnected[index].viewerPort = data.value.port
@@ -161,30 +157,6 @@ module.exports = () => {
           break
         case 'sendDisconnect':
           io.to(data.socketId).emit('sendDisconnect', data.value)
-          break
-        case 'sendFollow':
-          io.to(data.socketId).emit('sendFollow', data.value)
-          break
-        case 'sendEndCommands':
-          io.to(data.socketId).emit('sendEndCommands', data.value)
-          break
-        case 'sendStartWay':
-          io.to(data.socketId).emit('sendStartWay', data.value)
-          break
-        case 'sendSavePatrol':
-          io.to(data.socketId).emit('sendSavePatrol', data.value)
-          break
-        case 'move':
-          io.to(data.socketId).emit('move', data.value)
-          break
-        case 'interact':
-          io.to(data.socketId).emit('interact', data.value)
-          break
-        case 'interactBed':
-          io.to(data.socketId).emit('findBed', data.value)
-          break
-        case 'drop':
-          io.to(data.socketId).emit('drop', data.value)
           break
         case 'getConfig':
           io.to(data.socketId).emit('getConfig', socket.id)
