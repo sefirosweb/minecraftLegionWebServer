@@ -4,6 +4,7 @@
 * Adding enable / disable sprint config
 * Adding enable / disable dig (!caution the bot can stucks)
 * Adding reloading configuration button
+* Unify botWebsocket.on(XX events) to botWebsocket.on('action')
 # 0.1.6
 * Change version directly same has minecraftLegion for have "sync" versions
 * Added dynamic call for configure bot

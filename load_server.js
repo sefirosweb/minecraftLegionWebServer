@@ -162,9 +162,6 @@ module.exports = () => {
         case 'sendDisconnect':
           io.to(data.socketId).emit('sendDisconnect', data.value)
           break
-        case 'sendStay':
-          io.to(data.socketId).emit('sendStay', data.value)
-          break
         case 'sendFollow':
           io.to(data.socketId).emit('sendFollow', data.value)
           break
