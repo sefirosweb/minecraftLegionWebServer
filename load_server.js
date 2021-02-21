@@ -128,6 +128,10 @@ module.exports = () => {
       let index
 
       switch (data.action) {
+        case 'action':
+          io.to(data.socketId).emit('action', data.toBotData)
+          console.log('action', data)
+          break
         case 'sendMessage':
           io.to(data.socketId).emit('sendMessage', data.value)
           break
