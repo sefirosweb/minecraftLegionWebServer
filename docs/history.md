@@ -10,4 +10,4 @@
 * Added dynamic call for configure bot
 
 ## 0.0.3
-* Added security on websocket with password (see .env_example)
+* Added security on WebSocket with password (see .env_example)
