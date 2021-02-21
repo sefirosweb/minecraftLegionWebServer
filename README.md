@@ -18,9 +18,9 @@ WEB_CLIENT=http://localhost:4000
 - WEB_CLIENT => Is minecraftLegionWebClient host:port, is used for accept CORS
 
 ## Usage:
-Start app with `npm start`
-They start listening with port you selected in .env file 
-No need anything else, this app is used for bridge / middleware between bots and front end
+Start the app with `npm start`
+They start listening with the port you selected in the .env file. 
+No need for anything else. This app is used for bridge/middleware between bots and the front end.
 
 # TODO
 - Make a robuts documentation
