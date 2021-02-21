@@ -176,6 +176,9 @@ module.exports = () => {
         case 'interact':
           io.to(data.socketId).emit('interact', data.value)
           break
+        case 'interactBed':
+          io.to(data.socketId).emit('findBed', data.value)
+          break
         case 'drop':
           io.to(data.socketId).emit('drop', data.value)
           break
