@@ -76,6 +76,7 @@ module.exports = () => {
             itemsCanBeEat: [],
             chests: [],
             patrol: [],
+            plantAreas: [],
             minerCords: {
               xStart: null,
               yStart: null,
@@ -127,6 +128,7 @@ module.exports = () => {
       if (!isLoged()) { return }
       let index
 
+      // console.log(data)
       switch (data.action) {
         case 'action':
           io.to(data.socketId).emit('action', data.toBotData)
