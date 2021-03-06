@@ -1,3 +1,5 @@
+## 0.1.8
+* Update dependency
 ## 0.1.7
 * Added find chest and interect (save a home bed)
   * With command line and front end
@@ -9,5 +11,5 @@
 * Change version directly same has minecraftLegion for have "sync" versions
 * Added dynamic call for configure bot
 
-## 0.0.3
+## 0.0.3z
 * Added security on WebSocket with password (see .env_example)
