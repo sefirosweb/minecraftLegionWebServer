@@ -1,6 +1,6 @@
 {
   "name": "minecraftlegionwebserver",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": false,
   "description": "Project backend for minecraft legion web server",
   "main": "index.js",
