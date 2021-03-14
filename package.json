@@ -7,7 +7,9 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "standard": "npx standard --fix"
+    "standard": "npx standard --fix",
+    "dockerbuild": "docker build -t minecraftlegionwebserver .",
+    "dockerrun": "docker run --rm -p:4001:4001 minecraftlegionwebserver",
   },
   "author": "Sefirosweb",
   "license": "ISC",
