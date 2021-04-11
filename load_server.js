@@ -63,6 +63,7 @@ module.exports = () => {
           stateMachinePort: null,
           inventoryPort: null,
           viewerPort: null,
+          events: [],
           config: {
             job: 'none',
             mode: 'none',
