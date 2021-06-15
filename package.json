@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/sefirosweb/minecraftLegionWebServer#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "socket.io": "^4.0.1"
+    "dotenv": "^10.0.0",
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.1",
     "nodemon": "^2.0.7"
   }
 }
