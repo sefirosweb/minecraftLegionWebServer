@@ -70,6 +70,7 @@ module.exports = () => {
             distance: 10,
             helpFriends: false,
             pickUpItems: false,
+            randomFarmArea: false,
             isCopingPatrol: false,
             canDig: true,
             allowSprinting: true,
