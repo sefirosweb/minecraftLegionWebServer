@@ -79,6 +79,7 @@ module.exports = () => {
             chests: [],
             patrol: [],
             plantAreas: [],
+            farmAreas: [],
             minerCords: {
               xStart: null,
               yStart: null,
