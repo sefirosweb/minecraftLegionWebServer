@@ -83,7 +83,19 @@ module.exports = () => {
             farmAnimal: {
               seconds: 60,
               cow: 10,
-              sheep: 10
+              sheep: 10,
+              wolf: 10,
+              chicken: 10,
+              cat: 10,
+              horse: 10,
+              donkey: 10,
+              llama: 10,
+              pig: 10,
+              rabbit: 10,
+              turtles: 10,
+              panda: 10,
+              fox: 10,
+              bee: 10
             },
             minerCords: {
               xStart: null,
