@@ -1,5 +1,7 @@
+## 1.10
+* Added breeder job info
 ## 1.0.0
-
+* First stable deploy
 ## 0.1.8
 
 - Update dependency
