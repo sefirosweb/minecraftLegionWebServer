@@ -80,6 +80,7 @@ module.exports = () => {
             patrol: [],
             plantAreas: [],
             farmAreas: [],
+            chestAreas: [],
             farmAnimal: {
               seconds: 60,
               cow: 10,
