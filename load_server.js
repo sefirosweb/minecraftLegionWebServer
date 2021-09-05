@@ -12,6 +12,7 @@ module.exports = () => {
   const botsConnected = []
   const masters = []
   const usersLoged = []
+  let chests = []
 
 
 
@@ -215,6 +216,14 @@ module.exports = () => {
           }
 
           io.to('usersLoged').emit('mastersOnline', masters)
+          break
+        case 'setChests':
+          if (data.value === undefined) { return }
+          chests = data.value
+          io.to('usersLoged').emit('action', { type: 'getChests', value: chests })
+          break
+        case 'getChests':
+          socket.emit('action', { type: 'getChests', value: chests })
           break
       }
     })
