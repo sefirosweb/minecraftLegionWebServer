@@ -1,4 +1,7 @@
-## 1.10
+## 1.2.0
+* Added sorter job
+  * Added to send to all bots the status and the slots of chests
+## 1.1.0
 * Added breeder job info
 ## 1.0.0
 * First stable deploy
