@@ -109,5 +109,3 @@ examples/nodejs/serverchat/public/files
 
 # Exclude bot configurations
 botConfig/*.json
-
-package-lock.json

@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "standard": "npx standard --fix",
     "dockerbuild": "docker build -t minecraftlegionwebserver .",
-    "dockerrun": "docker run --rm -p:4001:4001 minecraftlegionwebserver"
+    "dockerrun": "docker run --rm -p:4001:4001 minecraftlegionwebserver",
+    "docker": "docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -v ~/.gitconfig:/etc/gitconfig -p 4001:4001 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash"
   },
   "author": "Sefirosweb",
   "license": "ISC",
@@ -22,11 +23,11 @@
   },
   "homepage": "https://github.com/sefirosweb/minecraftLegionWebServer#readme",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "socket.io": "^4.2.0"
+    "dotenv": "10.0.0",
+    "socket.io": "4.2.0"
   },
   "devDependencies": {
-    "chalk": "^4.1.2",
-    "nodemon": "^2.0.13"
+    "chalk": "4.1.2",
+    "nodemon": "2.0.13"
   }
 }
