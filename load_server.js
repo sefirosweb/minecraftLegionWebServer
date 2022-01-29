@@ -189,6 +189,8 @@ module.exports = () => {
       }
       let index;
 
+      if (debug) console.log(data);
+
       // console.log(data)
       switch (data.action) {
         case "action":
