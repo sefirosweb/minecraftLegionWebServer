@@ -83,6 +83,7 @@ module.exports = () => {
             canDig: false,
             allowSprinting: false,
             firstPickUpItemsFromKnownChests: true,
+            canCraftItemWithdrawChest: true,
             itemsToBeReady: [
               {
                 item: "sword",
