@@ -4,45 +4,49 @@ This project was part of [minecraftLegion](https://github.com/sefirosweb/minecra
 
 This is a bridge for manage the bot.
 
-## Install:
+## Install with docker
 
-- Install [Node.js](https://nodejs.dev/) version 14+
-- go to the directory which you want to install into
-- run `npm i minecraftLegionWebServer` on command prompt
-- make a new file called .env with the fields shown below
-
-```env
-LISTEN_PORT=4001
-ADMIN_PASSWORD=AdminnPassForManageBot
-WEB_CLIENT=http://localhost:4000
-```
-
-- Run the app with `npm start`
-- WEB_CLIENT => Is minecraftLegionWebClient host:port, is used for accept CORS
-
-## Usage:
-
-Start the app with `npm start`
-They start listening with the port you selected in the .env file.
-No need for anything else. This app is used for bridge/middleware between bots and the front end.
-
-# TODO
-
-- Make a robuts documentation
-
-# Adding new docker system
-
-## For develop
-
-Need to be create docker network:
+1. You need to have installed [docker](https://docs.docker.com/desktop/windows/wsl/), you can go to official docker site and follow the installation guide for you OS
+2. Create docker network if you have all services in same computer and if you not have already created
 
 ```
 docker network create minecraftLegionNetwork
 ```
 
-Start docker container and start watch
+3. Clone the repository
 
 ```
-npm run docker
-npm start
+git clone https://github.com/sefirosweb/minecraftLegionWebServer.git
+cd minecraftLegionWebServer
+```
+
+4. Copy and edit the .env file
+
+```js
+cp .env_example .env
+
+// Listen port of server
+LISTEN_PORT=4001
+// Password to access to the server
+ADMIN_PASSWORD=admin
+// The FRONT END URL for avoid CORS error
+WEB_CLIENT=http://localhost:3000
+```
+
+5. Start docker with node
+
+```
+docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -p 4001:4001 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash
+```
+
+6. Install dependencies
+
+```
+npm install
+```
+
+7. Start the server
+
+```
+node index.js
 ```
