@@ -50,3 +50,7 @@ npm install
 ```
 node index.js
 ```
+
+The server is running and listen in port 4001 
+You can change it manually, remember to change the port in docker params "-p XXXX:4001"
+
