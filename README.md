@@ -51,6 +51,43 @@ npm install
 node index.js
 ```
 
-The server is running and listen in port 4001 
+The server is running and listen in port 4001
 You can change it manually, remember to change the port in docker params "-p XXXX:4001"
 
+## Next usages
+
+For start again only you need to start docker and start the node:
+
+```
+docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -p 4001:4001 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash
+```
+
+```
+node index.js
+```
+
+## Manual update
+
+You need to "pull" the new code and install the new dependencies
+
+```
+git pull
+```
+
+Start docker:
+
+```
+docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -p 4001:4001 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash
+```
+
+Install new dependencies:
+
+```
+npm install
+```
+
+Start bot
+
+```
+node index.js
+```
