@@ -4,7 +4,7 @@ const config = {
   listenPort: process.env.LISTEN_PORT,
   adminPassword: process.env.ADMIN_PASSWORD,
   webClient: process.env.WEB_CLIENT,
-  debug: true,
+  debug: process.env.DEBUG == "true" ? true : false,
 };
 
 module.exports = config;
