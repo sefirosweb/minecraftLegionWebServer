@@ -14,6 +14,15 @@ module.exports = () => {
   const usersLoged = [];
   let chests = {};
 
+  let portals = {
+    overworld: {
+      the_nether: [],
+      the_end: []
+    },
+    the_nether: [],
+    the_end: []
+  };
+
   io.on("connection", (socket) => {
     console.log(`New client connected => ${socket.id}`);
 
@@ -294,6 +303,19 @@ module.exports = () => {
           break;
         case "getChests":
           socket.emit("action", { type: "getChests", value: chests });
+          break;
+        case "setPortals":
+          if (data.value === undefined) {
+            return;
+          }
+          portals = data.value;
+          io.to("usersLoged").emit("action", {
+            type: "getPortals",
+            value: portals,
+          });
+          break;
+        case "getPortals":
+          socket.emit("action", { type: "getPortals", value: portals });
           break;
       }
     });
