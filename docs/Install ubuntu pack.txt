@@ -28,7 +28,7 @@ cd minecraftLegionWebServer/
 echo "
 LISTEN_PORT=4001
 ADMIN_PASSWORD=admin
-WEB_CLIENT=http://$PUBLIC_IPV4:80
+WEB_CLIENT=http://$PUBLIC_IPV4
 " > .env
 
 docker run --rm -v $PWD:/home/app -w /home/app node:16.13-bullseye npm install
