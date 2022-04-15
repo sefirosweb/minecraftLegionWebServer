@@ -90,6 +90,7 @@ module.exports = () => {
             randomFarmArea: false,
             isCopingPatrol: false,
             canDig: false,
+            canPlaceBlocks: false,
             allowSprinting: false,
             firstPickUpItemsFromKnownChests: true,
             canCraftItemWithdrawChest: true,
