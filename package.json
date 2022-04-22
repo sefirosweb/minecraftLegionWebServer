@@ -5,12 +5,12 @@
   "description": "Project backend for minecraft legion web server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon --inspect=0.0.0.0:9250 index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "standard": "npx standard --fix",
     "dockerbuild": "docker build -t minecraftlegionwebserver .",
     "dockerrun": "docker run --rm -p:4001:4001 minecraftlegionwebserver",
-    "docker": "docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -v ~/.gitconfig:/etc/gitconfig -p 4001:4001 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash",
+    "docker": "docker run --rm -it --name minecraftLegionWebServer --hostname minecraftLegionWebServer --network minecraftLegionNetwork -v ~/.gitconfig:/etc/gitconfig -p 4001:4001 -p 9250:9250 -v $PWD:/home/app -w /home/app -u node node:16.13-bullseye /bin/bash",
     "update": "npx npm-check-updates"
   },
   "author": "Sefirosweb",
