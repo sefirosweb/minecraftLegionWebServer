@@ -90,6 +90,12 @@ module.exports = () => {
             randomFarmArea: false,
             isCopingPatrol: false,
             canDig: false,
+            canSleep: true,
+            sleepArea: {
+              x: null,
+              y: null,
+              z: null,
+            },
             canPlaceBlocks: false,
             allowSprinting: false,
             firstPickUpItemsFromKnownChests: true,
