@@ -148,6 +148,7 @@ module.exports = () => {
               zEnd: null,
               orientation: null,
               tunel: null,
+              reverse: false
             },
           },
         });
