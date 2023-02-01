@@ -1,8 +1,9 @@
-const fs = require('fs')
-const loadServer = require('./load_server')
-const crypto = require('crypto')
+import 'module-alias/register';
+import fs from 'fs'
+import loadServer from '@/load_server'
+import crypto from 'crypto'
 
-fs.access('.env', fs.F_OK, (err) => {
+fs.access('.env', fs.constants.F_OK, (err) => {
   if (err) {
     console.log('File ".env" not found')
     questions(0)
@@ -18,11 +19,11 @@ const requests = [
   'Please insert a secretkey [Blank auto generate]\n'
 ]
 
-function questions (i) {
+function questions(i: number) {
   process.stdout.write(requests[i])
 }
 
-const answer = []
+const answer: Array<string> = []
 process.stdin.on('data', (data) => {
   answer.push(data.toString().trim())
   if (answer.length < requests.length) {
@@ -32,14 +33,10 @@ process.stdin.on('data', (data) => {
   }
 })
 
-function writeFile (data) {
-  let port = data[0]
+function writeFile(data: Array<string>) {
+  let port = data[0] === '' ? 4001 : parseInt(data[0])
   let password = data[1]
   let secret = data[2]
-
-  if (port === '') {
-    port = 4001
-  }
 
   if (password === '') {
     password = crypto.randomBytes(8).toString('base64')

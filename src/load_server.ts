@@ -1,24 +1,30 @@
-module.exports = () => {
-  const { listenPort, adminPassword, webClient, debug } = require("./config");
+import config from "@/config";
+import http from 'http'
+import { Server, Socket } from 'socket.io'
+import { BotsConnected } from "@/types";
+import { defaultConfig } from "@/types/types";
 
-  const server = require("http").createServer();
-  const io = require("socket.io")(server, {
+export default () => {
+  const { adminPassword, debug, listenPort, webClient } = config
+
+  const server = http.createServer();
+  const io = new Server(server, {
     cors: {
       origin: webClient,
       credentials: true,
     },
   });
 
-  const botsConnected = [];
-  const masters = [];
-  const usersLoged = [];
+  const botsConnected: Array<BotsConnected> = [];
+  const masters: Array<{ name: string }> = [];
+  const usersLoged: Array<string> = [];
   let chests = {};
 
   let portals = {
     overworld_to_the_end: [],
-      overworld_to_the_nether: [],
-      the_end_to_overworld: [],
-      the_nether_to_overworld: []
+    overworld_to_the_nether: [],
+    the_end_to_overworld: [],
+    the_nether_to_overworld: []
   };
 
   io.on("connection", (socket) => {
@@ -75,80 +81,11 @@ module.exports = () => {
           health: 20,
           food: 20,
           combat: false,
-          stateMachinePort: null,
-          inventoryPort: null,
-          viewerPort: null,
+          stateMachinePort: undefined,
+          inventoryPort: undefined,
+          viewerPort: undefined,
           events: [],
-          config: {
-            job: "none",
-            mode: "none",
-            distance: 10,
-            helpFriends: false,
-            pickUpItems: false,
-            randomFarmArea: false,
-            isCopingPatrol: false,
-            canDig: false,
-            canSleep: true,
-            sleepArea: {
-              x: null,
-              y: null,
-              z: null,
-            },
-            canPlaceBlocks: false,
-            allowSprinting: false,
-            firstPickUpItemsFromKnownChests: true,
-            canCraftItemWithdrawChest: true,
-            itemsToBeReady: [
-              {
-                item: "sword",
-                quantity: 1,
-              },
-            ],
-            itemsCanBeEat: [
-              "bread",
-              "carrot",
-              "potato",
-              "sweet_berries",
-              "baked_potato",
-              "cooked_chicken",
-              "cooked_porkchop",
-              "cooked_mutton",
-              "golden_carrot",
-            ],
-            chests: [],
-            patrol: [],
-            plantAreas: [],
-            farmAreas: [],
-            chestAreas: [],
-            farmAnimal: {
-              seconds: 60,
-              cow: 10,
-              sheep: 10,
-              wolf: 10,
-              chicken: 10,
-              cat: 10,
-              horse: 10,
-              donkey: 10,
-              llama: 10,
-              pig: 10,
-              rabbit: 10,
-              turtle: 10,
-              panda: 10,
-              fox: 10,
-              bee: 10,
-            },
-            minerCords: {
-              xStart: null,
-              yStart: null,
-              zStart: null,
-              xEnd: null,
-              yEnd: null,
-              zEnd: null,
-              orientation: null,
-              tunel: null,
-              reverse: false
-            },
-          },
+          config: defaultConfig
         });
       }
       io.to("usersLoged").emit("botsOnline", botsConnected);
@@ -175,7 +112,9 @@ module.exports = () => {
           value: data.value,
           socketId: socket.id,
         };
+
         io.to("usersLoged").emit("botStatus", message);
+        //@ts-ignore via web socket can update any data
         botsConnected[botIndex][message.type] = message.value;
       }
     });
@@ -331,7 +270,7 @@ module.exports = () => {
     }
   });
 
-  function sendLogs(data, botName = "", socketId = "") {
+  function sendLogs(data: string, botName = "", socketId = "") {
     const date = new Date();
     const time =
       ("0" + date.getHours()).slice(-2) +
@@ -350,7 +289,7 @@ module.exports = () => {
     io.to("usersLoged").emit("logs", message);
   }
 
-  function findBotSocket(socket) {
+  function findBotSocket(socket: Socket) {
     const bot = botsConnected.find(
       (botConection) => botConection.socketId === socket.id
     );
